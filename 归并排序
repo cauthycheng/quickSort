@@ -1,0 +1,84 @@
+#include <iostream>
+#include <numeric>
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <sstream>
+#include <iostream>
+using namespace std;
+
+
+void Msort(int a[],int *temA,int L,int R);
+void MergeSort(int a[],int n  );
+void merge(int a[],int tmpA[],int L,int R,int RightEnd);
+
+
+
+void MergeSort(int a[],int n  )
+{
+    int *temA;
+    temA = (int*)malloc( n*sizeof(int));
+    if(temA!=NULL)
+    {
+        Msort(a,temA,0,n-1);
+        free( temA);
+    }
+    else return ;
+
+}
+
+
+void Msort(int a[],int *temA,int L,int R)
+{
+    int center=(L+R)/2;
+    if(L<R)
+    {
+        Msort(a,temA,L,center );
+        Msort( a,temA,center+1,R);
+        merge(a,temA,L,center+1,R);
+
+    }
+
+
+}
+
+void merge(int a[],int tmpA[],int L,int R,int RightEnd)
+{
+    int LeftEnd=R-1;
+    int tmp=L;
+    int NumsElement=RightEnd-L+1;
+    while(L<= LeftEnd &&R<=RightEnd )
+    {
+        if(a[L]<=a[R]) tmpA[tmp++]=a[L++];
+        else tmpA[tmp++]=a[R++];
+    }
+    while(L<= LeftEnd) tmpA[tmp++]=a[L++];
+    while(R<=RightEnd) tmpA[tmp++]=a[R++];
+
+    for(int i=-0;i<NumsElement;i++,RightEnd-- )
+        a[RightEnd]=tmpA[RightEnd];
+
+}
+
+int main()
+{
+
+
+
+    int a[10]={17,23,5,6,9,4,6,2,1,9};
+    MergeSort(a,10);
+
+    for(int i=0;i<10;i++)
+    cout << a[i]<<" ";
+
+    cout<<endl;
+
+
+
+
+
+
+
+
+}
