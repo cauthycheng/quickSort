@@ -1,3 +1,4 @@
+//归并排序
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -9,76 +10,64 @@
 using namespace std;
 
 
-void Msort(int a[],int *temA,int L,int R);
-void MergeSort(int a[],int n  );
-void merge(int a[],int tmpA[],int L,int R,int RightEnd);
-
-
-
-void MergeSort(int a[],int n  )
+void merge(int a[],int tmpA[],int l,int r,int mid)
 {
-    int *temA;
-    temA = (int*)malloc( n*sizeof(int));
-    if(temA!=NULL)
+    cout<<  " start merge...   "<<endl;
+    int length=r-l+1;
+    int i=l;
+    int j=mid+1;
+    int tmp=l;
+ 
+    while(i<=mid &&j<=r )
     {
-        Msort(a,temA,0,n-1);
-        free( temA);
-    }
-    else return ;
-
-}
-
-
-void Msort(int a[],int *temA,int L,int R)
-{
-    int center=(L+R)/2;
-    if(L<R)
-    {
-        Msort(a,temA,L,center );
-        Msort( a,temA,center+1,R);
-        merge(a,temA,L,center+1,R);
+        if(a[i]<=a[j] ) tmpA[tmp++]=a[i++];
+        else tmpA[tmp++]=a[j++];
 
     }
+    while(i<=mid) tmpA[tmp++]=a[i++];
+    while(j<=r) tmpA[tmp++]=a[j++];
+
+
+        for(int i=0;i<length;i++,r-- )
+        {
+            a[r]=tmpA[r];
+        }
+        return;
+
+
 
 
 }
 
-void merge(int a[],int tmpA[],int L,int R,int RightEnd)
+void MergeSort(int a[],int tmpA[],int l ,int r)
 {
-    int LeftEnd=R-1;
-    int tmp=L;
-    int NumsElement=RightEnd-L+1;
-    while(L<= LeftEnd &&R<=RightEnd )
-    {
-        if(a[L]<=a[R]) tmpA[tmp++]=a[L++];
-        else tmpA[tmp++]=a[R++];
-    }
-    while(L<= LeftEnd) tmpA[tmp++]=a[L++];
-    while(R<=RightEnd) tmpA[tmp++]=a[R++];
+    if(l>=r) return;
 
-    for(int i=-0;i<NumsElement;i++,RightEnd-- )
-        a[RightEnd]=tmpA[RightEnd];
+    int mid=(l+r)/2;
 
+
+    MergeSort(a,tmpA,l,mid);
+    MergeSort(a,tmpA,mid+1,r);
+    merge(a,tmpA,l,r,mid);
 }
+
+
+
+void mergeSort(int s[], int l, int r)
+{
+    int *tmpA;
+    tmpA=(int *)malloc(r*sizeof(int));
+    MergeSort(s,tmpA,l,r-1);
+}
+
 
 int main()
 {
 
-
-
-    int a[10]={17,23,5,6,9,4,6,2,1,9};
-    MergeSort(a,10);
-
-    for(int i=0;i<10;i++)
-    cout << a[i]<<" ";
-
-    cout<<endl;
-
-
-
-
-
-
-
+    int a[]={2,6,9,8,5,3,4,7,6,7};
+    int length=11;
+    mergeSort(a,0,length);
+    for(int i=0;i<11;i++) cout << a[i] <<" ";
+    cout <<endl;
 
 }
